@@ -1,19 +1,53 @@
 package ro.jademy.millionaire;
 
+import ro.jademy.millionaire.data.QuestionProvider;
+import ro.jademy.millionaire.model.Game;
+import ro.jademy.millionaire.model.Question;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Main {
     public static void main(String[] args) {
 
         // 1. define objects
-            // define properties
-            // define methods
+        // define properties
+        // define methods
         // 2. define interactions
 
-        // 1.
-        // Game
-        // Question
-        // Answer
-        // Level (???)
-        // Player (???)
+        // initialize questions
+        List<Question> difficultyZeroQuestions = getRandomQuestion(5, 0);
+        List<Question> difficultyOneQuestions = getRandomQuestion(5, 1);
+        List<Question> difficultyTwoQuestions = getRandomQuestion(4, 2);
+        List<Question> difficultyThreeQuestions = getRandomQuestion(1, 3);
 
+        // initialize game
+        Game game = new Game(difficultyZeroQuestions, difficultyOneQuestions, difficultyTwoQuestions, difficultyThreeQuestions);
+
+        // start the game
+        game.start();
+
+    }
+
+    private static List<Question> getRandomQuestion(int nrOfQuestions, int difficulty) {
+        // loop through all questions
+        // get all questions of given difficulty
+        // loop through sub-list until nrOfQuestions and select random items by index
+        // return said list
+        List<Question> questionsOfDifficulty = new ArrayList<>();
+        List<Question> randomQuestions = new ArrayList<>();
+        for (Question question : QuestionProvider.ALL_QUESTION) {
+            if (question.getDifficulty() == difficulty) {
+                questionsOfDifficulty.add(question);
+            }
+        }
+        Random random = new Random();
+        for (int i = 0; i < nrOfQuestions; i++) {
+            int randomIndex = random.nextInt(questionsOfDifficulty.size());
+            randomQuestions.add(questionsOfDifficulty.remove(randomIndex));
+        }
+
+        return randomQuestions;
     }
 }
