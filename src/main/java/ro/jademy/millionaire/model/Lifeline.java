@@ -1,12 +1,12 @@
-package ro.jademy.millionaire;
+package ro.jademy.millionaire.model;
 
 public class Lifeline {
 
     private String name;
+    private boolean used;
 
-    public Lifeline(String name, boolean used) {
+    public Lifeline(String name) {
         this.name = name;
-        this.used = used;
     }
 
     public String getName() {
@@ -24,6 +24,4 @@ public class Lifeline {
     public void setUsed(boolean used) {
         this.used = used;
     }
-
-    private boolean used;
 }

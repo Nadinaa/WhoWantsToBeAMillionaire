@@ -1,6 +1,5 @@
-package ro.jademy.millionaire;
+package ro.jademy.millionaire.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,13 +31,12 @@ public class Game {
     //      - > level [11, 14]  -> difficulty 2
     //      - > level 15        -> difficulty 3
 
-    private List<Question> difficultyZeroQuestions = new ArrayList<Question>();
-    private List<Question> difficultyOneQuestions = new ArrayList<Question>();
-    private List<Question> difficultyTwoQuestions = new ArrayList<Question>();
-    private List<Question> difficultyThreeQuestions = new ArrayList<Question>();
+    private List<Question> difficultyZeroQuestions = new ArrayList<>();
+    private List<Question> difficultyOneQuestions = new ArrayList<>();
+    private List<Question> difficultyTwoQuestions = new ArrayList<>();
+    private List<Question> difficultyThreeQuestions = new ArrayList<>();
 
-    private List<Lifeline> lifelines = new ArrayList<Lifeline>();
-
+    private List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel = LEVELS.get(0);
 
     public Game(List<Question> difficultyZeroQuestions, List<Question> difficultyOneQuestions, List<Question> difficultyTwoQuestions, List<Question> difficultyThreeQuestions) {
@@ -52,5 +50,27 @@ public class Game {
         lifelines.add(new Lifeline("50-50"));
     }
 
+    public void start() {
+        // show welcome screen
+        // optionally: show rules (rounds, lifelines etc) & commands
 
+        // show current level question
+        // read command from player
+        //  - if lifeline -> apply lifeline
+        //  - if end game -> end game
+        //  - read answer -> check answer
+        //      - if answer correct -> go to next level (set next level as current, set amount of money etc)
+        //      - if answer incorrect -> end game (calculate end sum, show bye bye message etc)
+
+
+        showWelcome();
+        showRules();
+    }
+
+    private void showWelcome() {
+    }
+
+    private void showRules() {
+
+    }
 }
