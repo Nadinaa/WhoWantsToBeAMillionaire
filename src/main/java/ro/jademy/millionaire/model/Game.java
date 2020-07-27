@@ -10,7 +10,7 @@ public class Game {
             new Level(1, 0, 100, 0),
             new Level(2, 0, 200, 0),
             new Level(3, 0, 500, 0),
-            new Level(4, 0 , 700, 0),
+            new Level(4, 0, 700, 0),
             new Level(5, 0, 1000, 0),
             new Level(6, 1, 2000, 1000),
             new Level(7, 1, 4000, 1000),
@@ -68,9 +68,21 @@ public class Game {
     }
 
     private void showWelcome() {
+        System.out.println("======================================================");
+        System.out.println("== WELCOME TO WHO WANTS TO BE A MILLIONAIRE GAME!!! ==");
+        System.out.println("======================================================");
+        System.out.println("================== Good Luck!=========================");
+        System.out.println("======================================================");
     }
 
     private void showRules() {
+        System.out.println("RULES:");
+        System.out.println("- You must answer 15 questions correctly in a row to win the game.");
+        System.out.println("- There are 5 questions of difficulty 0, 5 questions of difficulty 1, 4 questions of difficulty 2 and 1 question of difficulty 3.");
+        System.out.println("- For each question, the question and four possible answers are shown in advance before deciding whether to play on or not.");
+        System.out.println("- If you decide to offer an answer, it must be correct to stay in the game.");
+        System.out.println("- At any point, you can use up one of your three lifelines (50:50 - two of the three incorrect answers are removed).");
+
 
     }
 }
