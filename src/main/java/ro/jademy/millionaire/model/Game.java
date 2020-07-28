@@ -1,8 +1,6 @@
 package ro.jademy.millionaire.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Game {
 
@@ -65,6 +63,9 @@ public class Game {
 
         showWelcome();
         showRules();
+
+        showQuestion();
+
     }
 
     private void showWelcome() {
@@ -82,7 +83,78 @@ public class Game {
         System.out.println("- For each question, the question and four possible answers are shown in advance before deciding whether to play on or not.");
         System.out.println("- If you decide to offer an answer, it must be correct to stay in the game.");
         System.out.println("- At any point, you can use up one of your three lifelines (50:50 - two of the three incorrect answers are removed).");
-
-
+        System.out.println();
     }
-}
+
+    private void showQuestion() {
+        Question question;
+        List<Answer> allAnswers;
+        switch (currentLevel.getDifficultyLevel()) {
+            case 0:
+                question = difficultyZeroQuestions.get(0);
+                allAnswers = printQuestion(question);
+                // TODO
+                // let's assume user responded lifeline
+                // perform all validations beforehand
+                System.out.println();
+                System.out.println("Applying lifeline: ");
+                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                break;
+            case 1:
+                question = difficultyOneQuestions.get(0);
+                allAnswers = printQuestion(question);
+                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                break;
+            case 2:
+                question = difficultyTwoQuestions.get(0);
+                allAnswers = printQuestion(question);
+                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                break;
+            case 3:
+                question = difficultyThreeQuestions.get(0);
+                allAnswers = printQuestion(question);
+                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                break;
+            default:
+                System.out.println("Unknown difficulty level");
+                break;
+        }
+    }
+
+    private List<Answer> printQuestion(Question question) {
+        System.out.println(question.getText());
+        System.out.println();
+
+        List<Answer> allAnswers = new ArrayList<>(question.getWrongAnswers());
+        allAnswers.add(question.getCorrectAnswer());
+        // randomize list
+        Collections.shuffle(allAnswers);
+
+        for (int i = 0; i < allAnswers.size(); i++) {
+            System.out.println(((char) (65 + i)) + ". " + allAnswers.get(i).getText());
+        }
+
+        return allAnswers;
+    }
+
+    private void applyLifeline(Lifeline lifeline, List<Answer> allAnswers, Answer correctAnswer) {
+        // print all answers except 2 random WRONG answers
+        if (lifeline.getName().equals("50-50")) {
+            Random random = new Random();
+            List<Answer> answerListCopy = new ArrayList<>(allAnswers);
+            answerListCopy.remove(correctAnswer);
+            answerListCopy.remove(random.nextInt(answerListCopy.size()));
+            answerListCopy.remove(random.nextInt(answerListCopy.size()));
+
+            for (int i = 0; i < allAnswers.size(); i++) {
+                Answer answer = allAnswers.get(i);
+                if (answer.equals(correctAnswer) || answerListCopy.contains(answer)) {
+                    System.out.println(((char) (65 + i)) + ". " + allAnswers.get(i).getText());
+                } else {
+                    System.out.println(((char) (65 + i)) + ". ");
+                }
+            }
+        }
+            lifeline.setUsed(true);
+        }
+    }
