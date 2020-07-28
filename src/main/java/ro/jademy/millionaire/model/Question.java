@@ -1,13 +1,11 @@
 package ro.jademy.millionaire.model;
 
-import ro.jademy.millionaire.model.Answer;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
     private String text;
-    private List<Answer> wrongAnswers = new ArrayList<Answer>();
+    private List<Answer> wrongAnswers = new ArrayList<>();
     private Answer correctAnswer;
     private int difficulty;
 

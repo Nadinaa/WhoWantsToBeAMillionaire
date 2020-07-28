@@ -94,7 +94,7 @@ public class Game {
                 question = difficultyZeroQuestions.get(0);
                 allAnswers = printQuestion(question);
                 // TODO
-                // let's assume user responded lifeline
+                // let's assume user responded with apply lifeline
                 // perform all validations beforehand
                 System.out.println();
                 System.out.println("Applying lifeline: ");

@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {
 
         // 1. define objects
-        // define properties
-        // define methods
+        //    define properties
+        //    define methods
         // 2. define interactions
 
         // initialize questions
@@ -27,7 +27,6 @@ public class Main {
 
         // start the game
         game.start();
-
     }
 
     private static List<Question> getRandomQuestion(int nrOfQuestions, int difficulty) {
@@ -47,7 +46,6 @@ public class Main {
             int randomIndex = random.nextInt(questionsOfDifficulty.size());
             randomQuestions.add(questionsOfDifficulty.remove(randomIndex));
         }
-
         return randomQuestions;
     }
 }
