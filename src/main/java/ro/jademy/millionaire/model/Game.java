@@ -18,7 +18,7 @@ public class Game {
             new Level(11, 2, 64000, 32000),
             new Level(12, 2, 125000, 32000),
             new Level(13, 2, 250000, 32000),
-            new Level(14, 2, 50000, 32000),
+            new Level(14, 2, 500000, 32000),
             new Level(15, 3, 1000000, 500000)
     );
 
@@ -36,6 +36,8 @@ public class Game {
 
     private List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel = LEVELS.get(0);
+
+    private Scanner scanner = new Scanner(System.in);
 
     public Game(List<Question> difficultyZeroQuestions, List<Question> difficultyOneQuestions, List<Question> difficultyTwoQuestions, List<Question> difficultyThreeQuestions) {
         this.difficultyZeroQuestions = difficultyZeroQuestions;
@@ -65,11 +67,9 @@ public class Game {
         showRules();
 
         showQuestion();
-
     }
 
     private void showWelcome() {
-        System.out.println("======================================================");
         System.out.println("== WELCOME TO WHO WANTS TO BE A MILLIONAIRE GAME!!! ==");
         System.out.println("======================================================");
         System.out.println("================== Good Luck!=========================");
@@ -93,27 +93,26 @@ public class Game {
             case 0:
                 question = difficultyZeroQuestions.get(0);
                 allAnswers = printQuestion(question);
-                // TODO
-                // let's assume user responded with apply lifeline
-                // perform all validations beforehand
-                System.out.println();
-                System.out.println("Applying lifeline: ");
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                difficultyZeroQuestions.remove(question);
+                readCommandFromPlayer(question, allAnswers);
                 break;
             case 1:
                 question = difficultyOneQuestions.get(0);
                 allAnswers = printQuestion(question);
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                difficultyOneQuestions.remove(question);
+                readCommandFromPlayer(question, allAnswers);
                 break;
             case 2:
                 question = difficultyTwoQuestions.get(0);
                 allAnswers = printQuestion(question);
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                difficultyTwoQuestions.remove(question);
+                readCommandFromPlayer(question, allAnswers);
                 break;
             case 3:
                 question = difficultyThreeQuestions.get(0);
                 allAnswers = printQuestion(question);
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                difficultyThreeQuestions.remove(question);
+                readCommandFromPlayer(question, allAnswers);
                 break;
             default:
                 System.out.println("Unknown difficulty level");
@@ -122,7 +121,7 @@ public class Game {
     }
 
     private List<Answer> printQuestion(Question question) {
-        System.out.println(question.getText());
+        System.out.println("Question no " + currentLevel.getNumber() + ": " + question.getText());
         System.out.println();
 
         List<Answer> allAnswers = new ArrayList<>(question.getWrongAnswers());
@@ -137,10 +136,56 @@ public class Game {
         return allAnswers;
     }
 
+    private void readCommandFromPlayer(Question question, List<Answer> allAnswers) {
+        System.out.println();
+        System.out.println("Please insert 'E' if you want to end the game here; \n" +
+                "Please insert 'C' if you want to continue by answering the question; \n" +
+                "Please insert 'L' if you want to apply lifeline.");
+
+        String insertedCommand = scanner.nextLine();
+
+        switch (insertedCommand.toUpperCase()) {
+            case "E":
+                endGame(currentLevel.getRewardBreakout());
+                break;
+            case "C":
+                answerQuestion(question.getCorrectAnswer());
+                break;
+            case "L":
+                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                answerQuestion(question.getCorrectAnswer());
+                break;
+            default:
+                System.out.println("Please insert a known command!");
+                readCommandFromPlayer(question, allAnswers);
+                break;
+        }
+    }
+
+    private void answerQuestion(Answer correctAnswer) {
+        System.out.println("Choose the correct answer: ");
+        String chosenAnswer = scanner.nextLine();
+
+        if (chosenAnswer.equalsIgnoreCase(correctAnswer.getText())) {
+            System.out.println("Correct!");
+            if (currentLevel.getNumber() >= LEVELS.size()) {
+                endGame(currentLevel.getReward());
+            } else {
+                currentLevel = LEVELS.get(currentLevel.getNumber());
+                System.out.println("You reach level number " + currentLevel.getNumber());
+                System.out.println("Now you have " + LEVELS.get(currentLevel.getNumber() - 2).getReward() + " RON");
+                showQuestion();
+            }
+        } else {
+            System.out.println("Your answer is wrong!");
+            endGame(LEVELS.get(currentLevel.getNumber() - 1).getRewardBreakout());
+        }
+    }
+
     private void applyLifeline(Lifeline lifeline, List<Answer> allAnswers, Answer correctAnswer) {
         // print all answers except 2 random WRONG answers
+        Random random = new Random();
         if (lifeline.getName().equals("50-50")) {
-            Random random = new Random();
             List<Answer> answerListCopy = new ArrayList<>(allAnswers);
             answerListCopy.remove(correctAnswer);
             answerListCopy.remove(random.nextInt(answerListCopy.size()));
@@ -155,6 +200,14 @@ public class Game {
                 }
             }
         }
-            lifeline.setUsed(true);
+        lifeline.setUsed(true);
+    }
+
+    private void endGame(int reward) {
+        System.out.println("End GAME...");
+        System.out.println("You won " + reward + " RON");
+        if (currentLevel.getNumber() == LEVELS.size()) {
+            System.out.println("You correctly answered all the questions, congratulations! Your final amount is " + reward);
         }
     }
+}
