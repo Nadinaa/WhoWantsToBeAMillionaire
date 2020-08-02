@@ -28,15 +28,13 @@ public class Game {
     //      - > level [6, 10]   -> difficulty 1
     //      - > level [11, 14]  -> difficulty 2
     //      - > level 15        -> difficulty 3
-
+    int usedLifelines = 0;
     private List<Question> difficultyZeroQuestions = new ArrayList<>();
     private List<Question> difficultyOneQuestions = new ArrayList<>();
     private List<Question> difficultyTwoQuestions = new ArrayList<>();
     private List<Question> difficultyThreeQuestions = new ArrayList<>();
-
     private List<Lifeline> lifelines = new ArrayList<>();
     private Level currentLevel = LEVELS.get(0);
-
     private Scanner scanner = new Scanner(System.in);
 
     public Game(List<Question> difficultyZeroQuestions, List<Question> difficultyOneQuestions, List<Question> difficultyTwoQuestions, List<Question> difficultyThreeQuestions) {
@@ -152,8 +150,14 @@ public class Game {
                 answerQuestion(question.getCorrectAnswer());
                 break;
             case "L":
-                applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                if (usedLifelines < 3) {
+                    applyLifeline(lifelines.get(0), allAnswers, question.getCorrectAnswer());
+                } else {
+                    System.out.println("You already used all your lifelines!");
+                }
                 answerQuestion(question.getCorrectAnswer());
+
+
                 break;
             default:
                 System.out.println("Please insert a known command!");
@@ -201,6 +205,7 @@ public class Game {
             }
         }
         lifeline.setUsed(true);
+        usedLifelines++;
     }
 
     private void endGame(int reward) {
